@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.TimeZone;
 
 @RestController
-@RequestMapping("/scheduled-dispatch")
+@RequestMapping(value = "/scheduled-dispatch", consumes = "application/json")
 @Slf4j
 public class DispatcherController {
 
@@ -29,19 +29,28 @@ public class DispatcherController {
     }
 
     @PostMapping("/update-schedule")
-    public boolean updateScheduledRequest(@RequestParam String threadPrefix, @RequestParam String clock, @RequestParam String zone) {
-        return dynamicSchedulerService.rescheduleTask(threadPrefix, clock, TimeZone.getTimeZone(zone));
+    public boolean updateScheduledRequest(@RequestParam String threadPrefix,
+                                          @RequestParam(required = false) String clock,
+                                          @RequestParam(required = false) String zone,
+                                          @RequestParam boolean useDefaultValues,
+                                          @RequestParam(required = false) boolean scheduleIfNotPresent) {
+        return dynamicSchedulerService.rescheduleTask(threadPrefix, clock, zone, useDefaultValues, scheduleIfNotPresent);
+    }
+
+    @PostMapping("cancel-scheduled-task")
+    public boolean cancelScheduledTask(@RequestParam String threadPrefix, @RequestParam boolean cancelImmediately){
+        return dynamicSchedulerService.cancelScheduledFutureTask(threadPrefix, cancelImmediately);
     }
 
     @GetMapping("/get-next-schedule-for-task")
     public NextScheduledExecution getNextScheduleForTask(@RequestParam String threadPrefix){
         return futureScheduleService.findNextScheduledExecution(threadPrefix);
     }
-
-    @GetMapping("/get-task-config")
-    public void getNextScheduleForTask(){
-        taskService.getTaskConfig();
-    }
+//
+//    @GetMapping("/get-task-config")
+//    public void getNextScheduleForTask(){
+//        taskService.getTaskConfig();
+//    }
 
 
 }

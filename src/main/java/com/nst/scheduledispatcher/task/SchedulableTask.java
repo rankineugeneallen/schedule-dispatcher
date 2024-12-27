@@ -32,9 +32,9 @@ public abstract class SchedulableTask implements Runnable {
         return scheduledFutureTask;
     }
 
-    public void record(ScheduledDispatchRepository repository, String message, TaskProperties taskProperties, Date timestamp){
+    public DispatchRecord record(ScheduledDispatchRepository repository, String message, TaskProperties taskProperties, Date timestamp){
         DispatchRecord dispatchRecord = new DispatchRecord(message, timestamp, taskProperties.getThreadPrefix(), taskProperties.getDestination());
-        repository.save(dispatchRecord);
+        return repository.save(dispatchRecord);
     }
 
 }

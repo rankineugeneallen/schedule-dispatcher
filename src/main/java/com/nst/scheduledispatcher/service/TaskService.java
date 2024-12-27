@@ -40,7 +40,7 @@ public class TaskService {
     }
 
     public Optional<ScheduledFuture<?>> findScheduledFutureTask(String threadPrefix){
-        return Optional.of(scheduledFutureTasks.get(threadPrefix));
+        return Optional.ofNullable(scheduledFutureTasks.get(threadPrefix));
     }
 
     public void addScheduledFutureTask(String threadPrefix, ScheduledFuture<?> scheduledFutureTask){
@@ -51,8 +51,7 @@ public class TaskService {
         scheduledFutureTasks.remove(threadPrefix);
     }
 
-    public void getTaskConfig(){
-//        Map<String, OrderTaskConfig.TaskProperties> taskConfigs = orderTaskConfig.getTasks();
+    public ScheduledFuture<?> getScheduledFutureTask(String threadPrefix) {
+        return scheduledFutureTasks.get(threadPrefix);
     }
-
 }

@@ -14,17 +14,11 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class FutureScheduleService {
 
-    private final List<TaskScheduler> taskSchedulerList;
-    private final ConcurrentHashMap<String, ScheduledFuture<?>> scheduledFutureTasks;
-    private final List<SchedulableTask> schedulableTaskList;
+    private final TaskService taskService;
 
     @Autowired
-    public FutureScheduleService(List<TaskScheduler> taskSchedulerList,
-                                 ConcurrentHashMap<String, ScheduledFuture<?>> scheduledFutureTasks,
-                                 List<SchedulableTask> schedulableTaskList){
-        this.taskSchedulerList = taskSchedulerList;
-        this.scheduledFutureTasks = scheduledFutureTasks;
-        this.schedulableTaskList = schedulableTaskList;
+    public FutureScheduleService(TaskService taskService){
+        this.taskService = taskService;
     }
 
     public NextScheduledExecution findNextScheduledExecution(String threadPrefix){
@@ -33,7 +27,7 @@ public class FutureScheduleService {
         long timeDelayMin = 0L;
         long timeDelayHr = 0L;
 
-        ScheduledFuture<?> scheduledFutureTask = scheduledFutureTasks.get(threadPrefix);
+        ScheduledFuture<?> scheduledFutureTask = taskService.getScheduledFutureTask(threadPrefix);
 
         if(scheduledFutureTask != null){
             timeDelayMs = scheduledFutureTask.getDelay(TimeUnit.MILLISECONDS);

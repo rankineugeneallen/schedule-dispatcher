@@ -19,7 +19,7 @@ public class OrderTask extends SchedulableTask {
     JmsSender jmsSender;
     ScheduledDispatchRepository scheduledDispatchRepository;
 
-    public OrderTask(JmsSender jmsSender, OrderTaskProperties taskProperties, ScheduledDispatchRepository scheduledDispatchRepository){
+    public OrderTask(JmsSender jmsSender, TaskProperties taskProperties, ScheduledDispatchRepository scheduledDispatchRepository){
         this.jmsSender = jmsSender;
         this.taskProperties = taskProperties;
         this.scheduledDispatchRepository = scheduledDispatchRepository;
